@@ -1,0 +1,119 @@
+﻿@model IEnumerable<HeatMapViewModel>
+@{
+    ViewData["Title"] = "Excused Vacation Heatmap";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex my-4">
+    @if (ViewContext.RouteData.Values["action"].ToString() == "Heatmap")
+    {
+        <a class="btn btn-outline-default" asp-action="HeatmapAsPercentages">Show as Percentages</a>
+    }
+    else
+    {
+        <a class="btn btn-outline-default" asp-action="Heatmap">Show as Counts</a>
+    }
+</div>
+
+@if (ViewContext.RouteData.Values["action"].ToString() != "Heatmap")
+{
+    <h3 class="mx-3 font-400">Shown as Percentages (%)</h3>
+}
+else
+{
+    <h3 class="mx-3 font-400">Shown as the number of excused vacation per day</h3>
+}
+<div class="table-responsive row">
+    <table class="table table-hover table-striped col-lg-10 p-0 heatmap">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    User Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SundayCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MondayCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TuesdayCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WednesdayCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ThursdayCount)
+                </th>
+                @if (ViewContext.RouteData.Values["action"].ToString() != "Heatmap")
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalCount)
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SundayCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MondayCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TuesdayCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WednesdayCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThursdayCount)
+                    </td>
+                    @if (ViewContext.RouteData.Values["action"].ToString() != "Heatmap")
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalCount)
+                        </td>
+                    }
+                </tr>
+            }@if (!Model.Any())
+            {
+                <tr><td colspan="100" class="text-center">No records are available</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('table tbody tr').each(function () {
+                $('td', $(this)).each(function () {
+                    /**
+                     *  0 > percent > 25 | white
+                     *  25 >= percent < 50 | yellow
+                     *  50 >= percent < 75 | orange
+                     *  75 >= percent <= 100 | red
+                     **/
+                    var percent = parseInt($(this).text().trim());
+                    if (percent >= 25 && percent < 50) {
+                        $(this).addClass("heatmap-yellow");
+                    }
+                    else if (percent >= 50 && percent < 75) {
+                        $(this).addClass("heatmap-orange");
+                    }
+                    else if (percent >= 75 && percent <= 100) {
+                        $(this).addClass("heatmap-red");
+                    }
+                })
+            });
+        });
+    </script>
+}

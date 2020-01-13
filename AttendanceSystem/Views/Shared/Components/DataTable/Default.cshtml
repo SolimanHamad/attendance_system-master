@@ -1,0 +1,181 @@
+﻿@model AttendanceSystem.TagHelpers.DataTableTagHelper
+@using AttendanceSystem.Extensions
+@using AttendanceSystem.Attributes
+@using AttendanceSystem.TagHelpers
+@using System.Collections
+@* The table will only be generated if the model was supplied, otherwise the table info should be manual *@
+@{ 
+    bool hasActions = Model.CustomActions != null && Model.CustomActions.Count > 0;
+    string actionsHtml = "";
+    var nonDisplayedProperties = new List<string>();
+}
+@if (Model.For != null)
+{
+    <div class="table-responsive">
+        <table id="@Model.TableID" class="table table-striped table-bordered table-hover dataTable col-12">
+            <thead class="thead-dark">
+                @if (Model.EnableColumnSearch && Model.Ajax == null)
+                {
+                    <tr>
+                        @foreach (var cName in Model.ColumnNames)
+                        {
+                            <th class="hasinput"><input type='text' class='form-control' placeholder='Filter @cName' /></th>
+                        }
+                    </tr>
+                }
+            <tr>
+                @foreach (var property in Model.AllowedProperties)
+                {
+                    // Check whether the property has the NotDisplayed attribute
+                    var type = Model.For.Metadata.IsEnumerableType ?  Model.For.ModelExplorer.ModelType.GetGenericArguments()[0] : Model.For.ModelExplorer.ModelType;
+                    var propertyInfo = type.GetProperty(property.Name);
+                    bool isDisplayed = !Attribute.IsDefined(propertyInfo, typeof(NotDisplayedAttribute));
+                    if (isDisplayed)
+                    {
+                            <th>@property.DisplayOrName()</th>
+                    }
+                    else
+                    {
+                        nonDisplayedProperties.Add(property.Name);
+                    }
+                }
+                @if (hasActions)
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+            </thead>
+            <tbody>
+                @if (Model.Ajax == null && Model.For.Model is IEnumerable)
+                {
+                    foreach (var item in (IEnumerable)Model.For.Model)
+                    {
+                        <tr>
+                            @foreach (var prop in Model.AllowedProperties)
+                            {
+                                if (!nonDisplayedProperties.Contains(prop.Name))
+                                {
+                                    <td>@prop.PropertyGetter(item)</td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<script type="text/javascript" charset="utf-8">
+    window.addEventListener('DOMContentLoaded', function () {
+
+        // Construct the columns array
+        var columns = [];
+        @foreach (var prop in Model.AllowedProperties)
+        {            
+            if (!nonDisplayedProperties.Contains(prop.Name))
+            {
+                @:columns.push(@Html.Raw("{data: '" + prop.Name + "'},"));
+            }
+        }
+
+        @if(hasActions)
+        {
+            <text>
+                columns.push({
+                    data: "Actions",
+                    render: function (id, type, full, meta) {
+                        @for(int index = 0; index < Model.CustomActions.Count; index++)
+                        {
+                            CustomAction action = Model.CustomActions[index];
+                            actionsHtml += $"<a href=\"{action.Link}ReplaceIDHereReplaceReturnUrlHere\">";
+                            if(!string.IsNullOrEmpty(action.Icon))
+                            {
+                                actionsHtml += $"<i class=\"{action.Icon}\"></i>";
+                            }
+                            else if(!string.IsNullOrEmpty(action.Name))
+                            {
+                                actionsHtml += action.Name;
+                            }
+
+                            if (!string.IsNullOrEmpty(action.ReturnUrl))
+                            {
+                                actionsHtml = actionsHtml.Replace("ReplaceReturnUrlHere", $"?returnUrl={action.ReturnUrl}");
+                            }
+                            else
+                            {
+                                actionsHtml = actionsHtml.Replace("ReplaceReturnUrlHere", "");
+                            }
+
+                            actionsHtml += "</a>";
+                            if (index != Model.CustomActions.Count - 1)
+                            {
+                                actionsHtml += " | ";
+                            }
+                        }
+                        return '@Html.Raw(actionsHtml)'.replace(/ReplaceIDHere/g, full.Id);
+                    }
+                });
+            </text>
+        }
+        var table = $('#@Model.TableID').DataTable({
+            dom: "<'row col-12 dt-toolbar'<'col-xs-12 col-sm-6' @(Model.EnableExporting ? "B" : "")><'col-sm-6 col-xs-12 hidden-xs my-2'l>>t<'row col-12 dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>r",
+            language: { search: '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>' },
+            paging: @(Model.EnablePaging ? "true" : "false"),
+            searching: @(Model.EnableGlobalSearch && Model.Ajax == null? "true" : "false"),
+            responsive: @(Model.Responsive? "true" : "false"),
+            colReorder: @(Model.EnableColumnSearch? "true" : "false"),
+            fixedHeader: @(Model.EnableFixedHeader? "true" : "false"),
+            processing:  @(Model.Ajax != null ? "true" : "false"),
+            serverSide:  @(Model.Ajax != null ? "true" : "false"),
+            pageLength: 25,
+            order: [[0,'desc']],
+            @if (Model.GroupOn.HasValue)
+            {
+                @:rowGroup: {dataSrc: @Model.GroupOn.Value},
+            }
+            @if(Model.Ajax != null)
+            {
+                <text>
+                ajax: {
+                    url: '@Model.Ajax',
+                    beforeSend: function (request) {
+                        request.setRequestHeader('Accept', 'application/datatable');
+                    },
+                    data: function (d) {
+                        var t = $('#@Model.TableID').DataTable();
+                        delete d.columns;
+                        delete d.search;
+                        d.orderBy = t.settings().init().columns[d.order[0].column].data;
+                        d.orderDirection = d.order[0].dir;
+                        delete d.order;
+                        var filters = [];
+                        $("input[data-filter], select[data-filter]").each(function() {
+                            var comparison = $(this).data("comparison");
+                            var property = $(this).data("property");
+                            var value,value2;
+                            if (comparison === "Range") {
+                                value = $(this).val().split('-')[0].trim() ? $(this).val().split('-')[0].trim() : null;
+                                value2 = $(this).val().split('-')[1] ? $(this).val().split('-')[1].trim() : null;
+                            } else {
+                                value = $(this).val() ? $(this).val() : null;
+                                value2 = null;
+                            }
+                            filters.push({ property: property, comparisonType: comparison, value: value, value2: value2 });
+                        });
+                        d.filters = JSON.stringify(filters);
+                        return d;
+                    }
+                },
+                </text>
+            }
+            @if(Model.For != null)
+            {
+                <text>
+                columns: columns,
+                </text>
+            }
+            @Html.Raw(Model.AutoAjax ? "" : "deferLoading : 0 ,")
+        });
+        $('table thead th input[type = text]').on('keyup change', function () { table.column($(this).parent().index() + ':visible').search(this.value).draw(); });
+    });
+</script>

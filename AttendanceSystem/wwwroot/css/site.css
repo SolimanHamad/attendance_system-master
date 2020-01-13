@@ -1,0 +1,316 @@
+﻿/* * {
+    border: solid 1px red;
+} */
+#bs-override {
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+  /* heatmap styles */ }
+  #bs-override table {
+    border-collapse: separate;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.19);
+    border-radius: 6px; }
+    #bs-override table thead th:first-child {
+      border-top-left-radius: 6px; }
+    #bs-override table thead th:last-child {
+      border-top-right-radius: 6px; }
+    #bs-override table td {
+      max-width: 350px; }
+  #bs-override .dataTable {
+    padding: 0; }
+  #bs-override tbody.auto-index th:first-child:before {
+    counter-increment: Serial;
+    /* Increment the Serial counter */
+    content: counter(Serial);
+    /* Display the counter */ }
+  #bs-override .auto-index th:first-child {
+    width: 2%;
+    font-size: 0.9rem; }
+  #bs-override .container-fluid .mt-5 > h1 {
+    color: #fff;
+    font-weight: 500; }
+  #bs-override .navbar-brand-img {
+    max-height: 4rem; }
+  #bs-override .header .navbar-brand-img {
+    -webkit-filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5)); }
+  #bs-override .brand-text {
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
+    color: #dadada; }
+  #bs-override .side-nav h4 {
+    text-transform: uppercase;
+    color: gray;
+    margin: 0 1em;
+    font-weight: 400;
+    padding: 0.3em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+  #bs-override .side-nav .nav-item a {
+    position: relative;
+    padding: 0.65rem 1.0rem;
+    margin: 0.5em; }
+  #bs-override .side-nav .nav-item a::before {
+    content: unset; }
+  #bs-override .side-nav .nav-item a.active {
+    background: linear-gradient(87deg, rgba(75, 180, 230, 0.5) 0%, rgba(75, 115, 230, 0.3) 75%) !important;
+    border-radius: 5px; }
+  #bs-override .side-nav .nav-item .sub-nav-item {
+    border-left: 1px solid rgba(0, 0, 0, 0.5);
+    padding-left: 1em;
+    margin-left: 2.5em;
+    font-size: .75rem; }
+  #bs-override .sub-nav-link {
+    background: #e6e6e6;
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    margin: 0.2rem 0; }
+  #bs-override .sub-nav-link.active {
+    background: #294d5d;
+    color: #fff; }
+  #bs-override .badge-danger {
+    position: absolute;
+    top: 22%;
+    right: 7px;
+    background-color: #dc1b1b;
+    color: white;
+    font-size: 75%;
+    border-radius: 50%;
+    height: 27px;
+    width: 27px;
+    line-height: 14px;
+    opacity: 0.8; }
+  #bs-override select[class="form-control"] {
+    min-width: 150px; }
+  #bs-override .table-hover tbody tr:hover {
+    background-color: #d5d6dc; }
+  #bs-override .smart-form {
+    /*.icon-append {
+            border-left-style: solid;
+            border-left-width: 1px;
+            padding-left: 3px;
+            right: 5px;
+            border-color: #d2d2d2;
+        }*/ }
+    #bs-override .smart-form .row {
+      margin: 0.5em; }
+      #bs-override .smart-form .row > div {
+        margin: .5em; }
+    #bs-override .smart-form .input .icon-append + input, #bs-override .smart-form .smart-form .textarea .icon-append + textarea {
+      padding-left: 37px; }
+    #bs-override .smart-form .input, #bs-override .smart-form .select, #bs-override .smart-form .textarea, #bs-override .smart-form .radio, #bs-override .smart-form .checkbox, #bs-override .smart-form .toggle, #bs-override .smart-form .button {
+      position: relative; }
+    #bs-override .smart-form .icon-append, #bs-override .smart-form .icon-prepend {
+      font-size: 1.2rem;
+      height: 36px;
+      line-height: 35px;
+      position: absolute;
+      text-align: center;
+      top: 5px;
+      left: 0;
+      width: 38px;
+      color: #a9a9a9; }
+  #bs-override .dt-toolbar .dataTables_length label {
+    justify-content: flex-end; }
+  #bs-override .dt-toolbar .dataTables_length .form-control {
+    padding: 0.4rem 0.3rem;
+    height: calc(2.0rem + 2px);
+    margin: 0 0.5rem; }
+  #bs-override .pagination {
+    justify-content: flex-end; }
+    #bs-override .pagination .paginate_button:disabled a {
+      color: #8898aa;
+      pointer-events: none;
+      cursor: auto;
+      background-color: #fff;
+      border-color: #dee2e6; }
+    #bs-override .pagination .paginate_button:first-child a {
+      margin-left: 0;
+      border-top-left-radius: .375rem;
+      border-bottom-left-radius: .375rem; }
+    #bs-override .pagination .paginate_button.active a {
+      z-index: 1;
+      color: #fff;
+      background-color: #47abdb;
+      border-color: #47abdb;
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08); }
+    #bs-override .pagination .paginate_button a {
+      position: relative;
+      margin-left: -1px;
+      line-height: 1.25;
+      color: #8898aa;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0 3px;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: .875rem;
+      outline: none; }
+    #bs-override .pagination .paginate_button a:not(:disabled) {
+      cursor: pointer; }
+    #bs-override .pagination .paginate_button :hover {
+      z-index: 2;
+      color: #8898aa;
+      text-decoration: none;
+      background-color: #dee2e6;
+      border-color: #dee2e6; }
+    #bs-override .pagination .previous a, #bs-override .pagination .next a {
+      border-radius: 5px;
+      width: 100%;
+      padding: .5em; }
+    #bs-override .pagination .previous, #bs-override .pagination .next {
+      margin: 0 .5em; }
+  #bs-override input[data-filter], #bs-override select[data-filter] {
+    display: block;
+    width: 100%;
+    height: calc(2.75rem + 2px);
+    padding: 0.625rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #8898aa;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #cad1d7;
+    border-radius: 0.375rem;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    outline: none; }
+  #bs-override input[data-filter]:focus, #bs-override select[data-filter]:focus {
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); }
+  #bs-override .dl-horizontal dt {
+    float: left;
+    width: 160px;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  #bs-override .dl-horizontal dd {
+    margin-left: 180px; }
+  #bs-override .card-stats {
+    box-shadow: 0px 12px 22px -6px rgba(0, 0, 0, 0.2);
+    height: 105px; }
+    #bs-override .card-stats span {
+      font-size: 1.5rem; }
+  #bs-override .card-employee {
+    padding: 2em 3em;
+    margin: 1em;
+    /*background: unset;
+        border: unset;*/
+    box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    flex: 0 0 22%; }
+    #bs-override .card-employee h2 {
+      text-align: center;
+      text-transform: uppercase;
+      margin: 1em 0; }
+    #bs-override .card-employee .img-container {
+      text-align: center; }
+      #bs-override .card-employee .img-container img {
+        height: 10rem;
+        border-radius: 50%; }
+    #bs-override .card-employee h3 {
+      display: inline-block; }
+    #bs-override .card-employee span {
+      width: 40px; }
+    #bs-override .card-employee .buttons {
+      width: 130%;
+      margin-left: -15%; }
+  #bs-override .note {
+    margin: 5px 0px;
+    padding: 14px;
+    border: 1px solid #ebecf1;
+    border-radius: 5px;
+    background-color: rgba(139, 195, 248, 0.63);
+    color: #212529; }
+  #bs-override .alert {
+    position: fixed;
+    bottom: 50px;
+    right: 5px;
+    z-index: 5;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.3s, opacity 0.3s;
+    animation: fade-out .3s 9s forwards; }
+  #bs-override .arrow-down {
+    margin: 0 5px;
+    vertical-align: middle; }
+  #bs-override .error-page h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    width: 40%;
+    margin: 1em auto; }
+  #bs-override .text-wrap {
+    white-space: normal !important;
+    min-width: 200px; }
+  #bs-override .current-time {
+    background: rgba(0, 0, 0, 0.08);
+    margin: auto;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 2em;
+    padding: 1em; }
+  #bs-override ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px; }
+  #bs-override ::-webkit-scrollbar-track {
+    background-color: #dddddd; }
+  #bs-override ::-webkit-scrollbar-thumb {
+    background-color: #bebebe;
+    border-radius: 5px; }
+  #bs-override ::-webkit-scrollbar-thumb:hover {
+    background: #7c7c7c; }
+  #bs-override .heatmap td, #bs-override .heatmap th {
+    width: 10%;
+    text-align: center; }
+  #bs-override .heatmap tbody td, #bs-override .heatmap tbody th {
+    color: #000; }
+  #bs-override .heatmap td:first-child, #bs-override .heatmap th:first-child {
+    width: 30%;
+    text-align: left; }
+  #bs-override .heatmap td.heatmap-yellow {
+    background: rgba(233, 255, 0, 0.5); }
+  #bs-override .heatmap td.heatmap-orange {
+    background: rgba(255, 165, 0, 0.5); }
+  #bs-override .heatmap td.heatmap-red {
+    background: rgba(255, 28, 28, 0.5); }
+  #bs-override .invalid-email ul {
+    padding: 0 3px;
+    list-style: none; }
+  @media (min-width: 1200px) {
+    #bs-override .col-xl-20 {
+      flex: 0 0 20%;
+      max-width: 20%; } }
+
+@keyframes fade-out {
+  to {
+    visibility: hidden;
+    opacity: 0; } }
+
+@media only screen and (max-width: 768px) {
+  /* For tablets and smaller: */
+  .main-content > .container {
+    margin-top: -5rem !important; }
+  table, .table-text {
+    display: none !important; }
+  .navbar .container-fluid > a {
+    text-align: center; }
+  .main-content {
+    margin-left: 0 !important; }
+  h1 {
+    text-align: center !important; }
+  .small-device {
+    width: 35%;
+    margin: 1em auto;
+    padding-top: 4em;
+    display: block !important; } }
+
+@media only screen and (max-width: 335px) {
+  #check-out {
+    margin-top: 1rem; } }

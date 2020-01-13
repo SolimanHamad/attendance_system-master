@@ -1,0 +1,151 @@
+﻿@*@model IEnumerable<VacationViewModel>*@
+@model SearchViewModel
+
+@{
+    ViewData["Title"] = "Manage Vacation Requests";
+
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-end my-4">
+
+    <a class="btn btn-primary" asp-action="AddVacationToAllEmployees">New Vacation to all Employees</a>
+    <a class="btn btn-primary" asp-action="AddVacationToEmployee">New Vacation to an Employee</a>
+    <a class="btn btn-outline-default" asp-action="Heatmap">Excused Vacation Heatmap</a>
+
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <form asp-controller="Vacation" asp-action="Manage" method="post">
+                        <input id="SortBy" asp-for="SortBy" style="visibility:hidden" />
+                        <th>
+                            <a id="sorter" >@Html.DisplayNameFor(Model => Model.IssueDate)</a>
+                            <br/>
+                            <input type="date" style="height: 25px" asp-for="IssueDate" placeholder="yyyy/mm/dd">
+                        </th>                    
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["StartDateSort"]">@Html.DisplayNameFor(Model => Model.StartDate)</a>
+                            <br/>
+                            <input type="date" style="height: 25px" asp-for="StartDate" placeholder="yyyy/mm/dd">
+                        </th>
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["EndDateSort"]">@Html.DisplayNameFor(Model => Model.EndDate)</a>
+                            <br/>
+                            <input style="height: 25px" type="date" asp-for="EndDate">
+                        </th>
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["NameSort"]">@Html.DisplayNameFor(Model => Model.Name)</a>
+                            <br/>
+                            <input type="text" style=" width:90px" asp-for="Name">
+                        </th>
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["TotalDaysSort"]">@Html.DisplayNameFor(Model => Model.TotalDays)</a>
+                            <br />
+                                <input type="text" style=" width:70px" asp-for="TotalDays">
+                        </th>
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["StatusSort"]">@Html.DisplayNameFor(Model => Model.RequestStatus)</a>
+                            <br/>
+                            <select style="height:25px" asp-for="RequestStatus" asp-items="Html.GetEnumSelectList<RequestStatus>()">
+                                <option selected="selected" value="">--Select--</option>
+                            </select>
+                        </th>
+                        <th>
+                            <a asp-action="Manage" asp-route-sortBy="@ViewData["typeSort"]">@Html.DisplayNameFor(Model => Model.VacationType)</a>
+                            <br/>
+                            <select style="height:25px" asp-for="VacationType" asp-items="Html.GetEnumSelectList<VacationType>()">
+                                <option selected="selected" value="">--Select--</option>
+                            </select>
+                        </th>
+                        <th style="text-align: center;">
+                            <a>Comment</a>
+                            <br />
+                            <input type="text" style="width: 90px; visibility:hidden">
+                        </th>
+                        <th>
+                            <div> Actions </div>
+                            <button type="submit" value="search" class="btn btn-primary btn-sm">Filter</button>
+                        </th>
+                    </form>
+
+                </tr>
+            </thead>
+            <tbody class="auto-index">
+
+                @foreach (var item in Model.Vacations) /// make a list of vacationmodels inside the vacationViewModel
+                {
+
+                    var statusClass = item.Status == RequestStatus.Pending ? "font-weight-bold fa fa-spinner" :
+                                     item.Status == RequestStatus.Approved ? "font-weight-bold fa fa-check" :
+                                                                             "font-weight-bold fa fa-window-close";
+                    var statusStyle = item.Status == RequestStatus.Pending ? "color: #2da3ce" :
+                                     item.Status == RequestStatus.Approved ? "color: #2dce89" :
+                                                                             "color: #e3385a";
+
+                    var typeClass = item.VacationType == VacationType.Personal ? "font-weight-bold fa fa-plane" :
+                                     item.VacationType == VacationType.Excused ? "font-weight-bold fa fa-skull" :
+                                     item.VacationType == VacationType.Unpaid ? "font-weight-bold fa fa-balance-scale" :
+                                                                                 "font-weight-bold fa fa-bed";
+                    var typeStyle = item.VacationType == VacationType.Personal ? "color: #2da3ce" :
+                                     item.VacationType == VacationType.Excused ? "color: #e3385a" :
+                                     item.VacationType == VacationType.Unpaid ? "color: #ceb52d" :
+                                                                                 "color: #2dce89";
+
+                     <tr>
+
+
+                         <td>
+                             @Html.DisplayFor(modelItem => item.CreatedAt) 
+                         </td>           
+                         <td>
+                             @Html.DisplayFor(modelItem => item.StartDate) 
+                         </td>
+                         <td>
+                             @Html.DisplayFor(modelItem => item.EndDate)
+                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalDays)
+                        </td>
+                        <td style="@statusStyle">
+                          <p class="@statusClass"> </p>  @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td style="@typeStyle">  
+                         <p class="@typeClass" > </p>   @Html.DisplayFor(modelItem => item.VacationType)
+                        </td>
+                        <td style="word-wrap:break-word; white-space:normal ; border: 1px;  max-width: 250px">
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            <a asp-action="Approve" asp-route-id="@item.Id">Approve</a> |
+                            <a asp-action="Reject" asp-route-id="@item.Id">Reject</a> |
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+ </div> 
+
+@section SortBYScript{  
+<script>
+    document.getElementById("SortBy").addEventListener("click", updateSortBy);
+    function updateSortBy() { }
+    document.getElementById("SortBy") = document.getElementById("sorter").innerHTML;
+
+
+
+</script>
+}

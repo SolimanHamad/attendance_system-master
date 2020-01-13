@@ -1,0 +1,194 @@
+﻿@model List<DailyAttendanceViewModel>
+@{
+    ViewData["Title"] = "Daily Attendnace";
+    var presents = 0;
+    var lefts = 0;
+    var missing = 0;
+    int vacation = 0;
+    int excused = 0;
+    int general = 0;
+    int personal = 0;
+    int unpaid = 0;
+    foreach(var record in Model)
+    {
+        if (record.Status == AttendanceStatus.Present)
+        {
+            presents++;
+        }
+        else if (record.Status == AttendanceStatus.Left)
+        {
+            lefts++;
+        }
+        else if (record.Status == AttendanceStatus.Vacation)
+        {
+            vacation++;
+
+            if (record.Type == VacationType.Excused)
+            {
+                excused++; 
+            }
+           else if (record.Type == VacationType.General)
+           {
+              general++;
+           }
+            else if (record.Type == VacationType.Personal)
+            {
+            personal++;
+            }
+                        else if (record.Type == VacationType.Unpaid)
+            {
+            unpaid++;
+            }
+        }
+
+        else
+        {
+            missing++;
+        }
+    }
+}
+
+    <h1>Employees Attendnace of @ViewBag.Date</h1>
+    <div class="row my-4 justify-content-start">
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Present
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @presents
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Left
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @lefts
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Missing
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @missing
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Vacation
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @vacation
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Excused Vacation
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @excused
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-4 pb-3">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-muted mb-0">
+                        Personal Vacation
+                    </h5>
+                    <span class="h2 font-weight-bold mb-0">
+                        @personal
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+
+            <div class="col-sm-10 table-responsive">
+
+                <table class="table table-hover table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Last Event</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="auto-index">
+                        @foreach (var record in Model)
+                        {
+
+                        <tr>
+                            <th scope="col"></th>
+                            <td>@record.UserName</td>
+                            <td>@record.LastEvent</td>
+                            @if (record.Status == AttendanceStatus.Present)
+                            {
+                                <td class="text-green font-weight-bold"> <i class="ni ni-single-02"></i> @record.Status</td>
+
+                            }
+                            else if (record.Status == AttendanceStatus.Left)
+                            {
+                                <td class="font-weight-bold"><i class="ni ni ni-user-run"></i> @record.Status</td>
+                            }
+                            else if (record.Status == AttendanceStatus.Vacation)
+                            {
+                                if (record.Type == VacationType.Personal)
+                                {
+                                    <td class="font-weight-bold"><i class="fa fa-plane"></i> @record.Type @record.Status</td>
+                                }
+                                if (record.Type == VacationType.Unpaid)
+                                {
+                                    <td class="font-weight-bold"><i class="fa fa-balance-scale"></i> @record.Type @record.Status</td>
+                                }
+                                if (record.Type == VacationType.Excused)
+                                {
+                                    <td class="font-weight-bold" style="color: darkred"><i class="fa fa-skull"></i> @record.Type @record.Status</td>
+                                }
+                                if (record.Type == VacationType.General)
+                                {
+                                    <td class="font-weight-bold" style="color: green"><i class="fa fa-bed"></i> @record.Type @record.Status</td>
+                                }
+
+                            }
+                            else
+                            {
+                                <td class="text-danger font-weight-bold"> <i class="fas fa-heart-broken"></i> @record.Status </td>
+                            }
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+                <div class="row col-10 justify-content-end">
+                 <a class="btn btn-secondary" asp-route-n="@(ViewBag.Current-1)">Previous Day</a>
+                 <a class="btn btn-secondary" asp-route-n="@(ViewBag.Current+1)">Next Day</a>                    
+                </div>
+        </div>
+@section  Scripts{ 
+    <script src="https://kit.fontawesome.com/98945cd90c.js"></script>
+}

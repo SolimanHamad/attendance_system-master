@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        ATTEND - Remal
+    </title>
+    <!-- Favicon -->
+    <link href="~/img/brand/remal.png" rel="icon" type="image/png">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <!-- Icons -->
+    <link href="~/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+    <link href="~/js/plugins/fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="~/scss/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+
+<body class="bg-default" id="bs-override">
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header bg-gradient-primary py-4 py-lg-5 position-relative">
+            <div class="container">
+                <div class="header-body text-center mb-7">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-md-6">
+                            <a class="navbar-brand p-0 m-0 mb-1" asp-controller="Home" asp-action="Index">
+                                <img src="~/img/brand/remal.png" class="navbar-brand-img" alt="...">
+                                <h1 class="mt-2 text-uppercase brand-text">Attend</h1>
+                            </a>
+                            <h1 class="text-white m-0">Welcome!</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator separator-bottom separator-skew zindex-100">
+                <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+                </svg>
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])
+        @RenderBody()
+
+        <footer class="py-5">
+            <div class="container">
+                <div class="row align-items-center justify-content-xl-between">
+                    <div class="copyright text-center text-xl-left text-muted">
+                        © @{var year = DateTime.Now.Year;}@year <a href="#" class="font-weight-bold ml-1" target="_blank">Attend</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--   Core   -->
+    <script src="~/js/plugins/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!--   Optional JS   -->
+    <!--   Argon JS   -->
+    <script src="~/js/argon-dashboard.min.js?v=1.1.0"></script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+﻿@model UserManagementModel
+@using AttendanceSystem.TagHelpers
+
+@{
+    ViewData["Title"] = "Manage Employee Accounts";
+
+    var actions = new List<CustomAction>();
+    actions.Add(new CustomAction()
+    {
+        Name = "Edit",
+        Link = "/UserManagement/Edit/"
+    });
+    actions.Add(new CustomAction()
+    {
+        Name = "Timeline",
+        Link = "/Timeline/"
+    });
+    actions.Add(new CustomAction()
+    {
+        Name = "Offenses",
+        Link = "/Offenses/"
+    });
+    actions.Add(new CustomAction()
+    {
+        Name = "Activation & Deletion",
+        Link = "/UserManagement/Disable/"
+    });
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-end my-4">
+    <a class="btn btn-primary" asp-action="Create">Create Account</a>
+</div>
+
+@*<div class="smart-form my-3">
+    <div class="row align-items-center">
+        <h5 class="text-uppercase">Filters</h5>
+        <filter for="Email" />
+        <filter for="PhoneNumber" />
+    </div>
+</div>*@
+
+<table for="@Model" ajax="/api/users" auto-ajax="true" actions="actions"></table>

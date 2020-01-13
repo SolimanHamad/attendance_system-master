@@ -1,0 +1,16 @@
+﻿@model UserManagementModel
+@{
+    ViewData["Title"] = "Manage your Account";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">            
+            <partial name="_Manage" />
+        </div>
+    </div>
+</div>

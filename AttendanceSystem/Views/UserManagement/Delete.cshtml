@@ -1,0 +1,74 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Delete Account";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3 class="mt-4">Are you sure you want to delete this?</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateJoined)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateJoined)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VacationBalance)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VacationBalance)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.YearlyIncrement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.YearlyIncrement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GracePeriod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GracePeriod)
+        </dd>
+        <p class="m-4 text-red">Note: deleting a user account will also delete anything related to him/her (e.g. vacation requests, check-in and check-out records, offenses, etc..).</p>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete Account Permanently" class="btn btn-danger" />
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

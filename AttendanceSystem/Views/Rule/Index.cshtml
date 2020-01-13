@@ -1,0 +1,57 @@
+﻿@using AttendanceSystem.Extensions
+@model RuleViewModel
+@{
+    ViewData["Title"] = "Rules Configurations";
+}
+
+<h1>Rules Configurations</h1>
+
+<div class="row mt-4">
+    
+        @using (Html.BeginForm("Index", "Rule", FormMethod.Post))
+        {
+            <div class="col-sm-12 table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="thead-dark">
+
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Offense Degree</th>
+                            <th scope="col" style="padding-left: 38px;">1st</th>
+                            <th scope="col" style="padding-left: 38px;">2nd</th>
+                            <th scope="col" style="padding-left: 38px;">3rd</th>
+                            <th scope="col" style="padding-left: 38px;">4th</th>
+                            <th scope="col" style="padding-left: 38px;">5th+</th>
+                            <th scope="col">Monthly Allowance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="auto-index">
+                        @{var j = 0;}
+                        @for (var i = 0; i < Model.Allowances.Count; i++)
+                        {
+
+                            @Html.HiddenFor(x => x.Allowances[i].Degree)
+                            <tr>
+                                <th scope="col"></th>
+                                <td class="text-wrap font-weight-600">@Model.Allowances[i].Degree.GetDisplayName()</td>
+                                @for (var x = 0; x < 5; j++, x++)
+                                {
+                                    @Html.HiddenFor(r => r.Rules[j].ID)
+                                    @Html.HiddenFor(r => r.Rules[j].Occurrence)
+                                    @Html.HiddenFor(r => r.Rules[j].OffenseDegree)
+                                    <td>@Html.TextBoxFor(r => r.Rules[j].PenaltyPercent, new { type = "number", min = "0", @class = "form-control" })</td>
+                                }
+                                <td>@Html.TextBoxFor(x => x.Allowances[i].UserMonthlyAllowance, new { type = "number", min = "0", @class = "form-control" })</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>      }
+   
+</div>

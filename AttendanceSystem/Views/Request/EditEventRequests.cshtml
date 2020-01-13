@@ -1,0 +1,59 @@
+﻿@using AttendanceSystem.Extensions
+@model List<EditEventRequest>
+@{
+    ViewData["Title"] = "Edit Event Requests";
+}
+
+<h1>Your Edit Event Requests</h1>
+
+<div class="row">
+    <div class="col-sm-12 table-responsive">
+        <table class="table table-hover table-striped mt-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Request Date</th>
+                    <th scope="col">Event Name</th>
+                    <th scope="col">Event Date</th>
+                    <th scope="col">Old Time</th>
+                    <th scope="col">New Time</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Approval</th>
+                </tr>
+            </thead>
+            <tbody class="auto-index">
+            @foreach (EditEventRequest request in Model)
+            {
+                <tr>
+                    <th scope="col"></th>
+                    <td>@request.IssueDate.ToString("dd/MM/yyyy")</td>
+                    <td>@request.UserEvent.Event.GetDisplayName()</td>
+                    <td>@request.UserEvent.Time.ToString("dd/MM/yyyy")</td>
+                    <td>@request.UserEvent.Time.ToShortTimeString()</td>
+                    <td>@request.NewTime.ToShortTimeString()</td>
+                    <td class="text-wrap">@request.Comment</td>
+                    @switch (request.Approval)
+                    {
+                        case Approval.Approved:
+                            <td class="text-green font-weight-bold">@request.Approval</td>
+                            break;
+                        case Approval.Rejected:
+                            <td class="text-danger font-weight-bold">@request.Approval</td>
+                            break;
+                        default:
+                            <td>@request.Approval</td>
+                            break;
+                    }
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="text-center">No records are available</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-12">
+        Showing at maximum last 20 requests
+    </div>
+</div>

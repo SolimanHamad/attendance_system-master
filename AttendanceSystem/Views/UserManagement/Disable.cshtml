@@ -1,0 +1,91 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Account Activation";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3 class="mt-4">Account info</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateJoined)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateJoined)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VacationBalance)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VacationBalance)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.YearlyIncrement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.YearlyIncrement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GracePeriod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GracePeriod)
+        </dd>
+        @if (Model.IsEnabled)
+        {
+            <p class="m-4 text-red">Note: disabling a user account will prevent him/her to log in and as a result not being able to use Attend system.</p>
+        }
+        </dl>
+
+    <div class="row align-items-center">
+        @if (Model.IsEnabled)
+        {
+            <form asp-action="Disable">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Disable Account" class="btn btn-default" />
+            </form>
+        }
+        else
+        {
+            <form asp-action="Enable">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Enable Account" class="btn btn-success" />
+            </form>
+        }
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Permanently</a>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>

@@ -1,0 +1,40 @@
+﻿*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+AttendanceSystem/[Dd]ebug/
+AttendanceSystem/[Dd]ebugPublic/
+AttendanceSystem/[Rr]elease/
+AttendanceSystem/[Rr]eleases/
+AttendanceSystem/x64/
+AttendanceSystem/x86/
+AttendanceSystem/build/
+AttendanceSystem/bld/
+AttendanceSystem/[Bb]in/
+AttendanceSystem/[Oo]bj/
+AttendanceSystem/msbuild.log
+AttendanceSystem/msbuild.err
+AttendanceSystem/msbuild.wrn
+AttendanceSystem/Migrations
+
+# Visual Studio 2015
+.vs/
+
+# Migrations files
+AttendanceSystem/Migrations
+Migrations
+
+/.idea/.idea.AttendanceSystem/.idea
+/.idea/.idea.AttendanceSystem/riderModule.iml

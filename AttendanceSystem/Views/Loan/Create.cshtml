@@ -1,0 +1,38 @@
+﻿@model LoanViewModel
+@{
+    ViewData["Title"] = "Add New Loan to Employee";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label">Employee</label>
+                <select class="form-control" asp-for="UserId">
+                    @foreach (ApplicationUser user in ViewBag.users)
+                    {
+                        <option value="@user.Id">@user.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginalAmount" class="control-label"></label>
+                <input asp-for="OriginalAmount" class="form-control" />
+                <span asp-validation-for="OriginalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyPayment" class="control-label"></label>
+                <input asp-for="MonthlyPayment" class="form-control" />
+                <span asp-validation-for="MonthlyPayment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-default" />
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

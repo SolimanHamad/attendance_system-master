@@ -1,0 +1,145 @@
+﻿@model IEnumerable<VacationViewModel>
+
+@{
+    ViewData["Title"] = $"Your {ViewBag.Year}'s Vacation Requests";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-end my-4">
+    <a class="btn btn-primary" asp-action="Create">Request Vacation</a>
+    <a class="btn btn-primary" asp-action="CreateHalfDay">Request Half Day Vacation</a>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Remaining Vacation Balance
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.VacationBalance
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Total Requested Days
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.TotalRequestedVacationDays
+                </span>
+                <small>Personal vacation days</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Yearly Increment
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.YearlyIncrement
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalDays)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VacationType)
+                </th>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="auto-index">
+            @foreach (var item in Model)
+            {
+
+                     var statusClass = item.Status == RequestStatus.Pending ? "font-weight-bold fa fa-spinner" :
+                                      item.Status == RequestStatus.Approved ? "font-weight-bold fa fa-check" :
+                                                                              "font-weight-bold fa fa-window-close";
+                        var statusStyle = item.Status == RequestStatus.Pending ? "color: darkblue" :
+                                         item.Status == RequestStatus.Approved ? "color: green" :
+                                                                                 "color: red";
+                    
+                     var typeClass = item.VacationType == VacationType.Personal ? "font-weight-bold fa fa-plane" :
+                                      item.VacationType == VacationType.Excused ? "font-weight-bold fa fa-skull" :
+                                      item.VacationType == VacationType.Unpaid ? "font-weight-bold fa fa-balance-scale" :
+                                                                                  "font-weight-bold fa fa-bed";
+                        var typeStyle = item.VacationType == VacationType.Personal ? "color: darkblue" :
+                                         item.VacationType == VacationType.Excused ? "color: red" :
+                                         item.VacationType == VacationType.Unpaid ? "color: #ceb52d" :
+                                                                                     "color: green";
+                <tr>
+                    <th></th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalDays)
+                    </td>
+                    <td class="@statusClass" style="@statusStyle">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td class="@typeClass" style="@typeStyle">
+                        @Html.DisplayFor(modelItem => item.VacationType)
+                    </td>
+                    <td style="word-wrap:break-word; white-space:normal ; border: 1px; max-width: 250px">
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @if (item.Status == RequestStatus.Pending)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <a>|</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="text-center">No records are available for this period</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row col-12 justify-content-end mt-3">
+    <a class="btn btn-secondary" asp-route-y="@(ViewBag.Year-1)">Previous year</a>
+        <a class="btn btn-secondary" asp-route-y="@(ViewBag.Year+1)">Next year</a>
+</div>

@@ -1,0 +1,70 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            .container {
+                background-color: rgb(191, 225, 245);
+                padding-bottom: 45px;
+                direction: ltr;
+            }
+    
+            .title {
+                color: rgb(40, 40, 110);
+            }
+    
+            header {
+                height: 110px;
+                width: 100%;
+                background: linear-gradient(87deg, #47abdb 0, #476ddb 100%) !important;
+                text-align: center;
+            }
+    
+            .content {
+                width: 90vw;
+                max-width: 720px;
+                background-color: white;
+                border-radius: 25px;
+                box-shadow: 0 4px 20px 8px rgb(121, 159, 191);
+                padding: 0 30px 30px 30px;
+            }
+    
+            .content-box {
+                border: 25px;
+                border-radius: 25px;
+                padding: 20px 20px 5px 20px;
+                box-shadow: 0 3px 4px 0 #b9b9b9;
+                color: rgb(40, 40, 110);
+                position: relative;
+                top: 10%;
+                margin: auto;
+                display: block;
+            }
+    
+            .email-brand-img {
+                -webkit-filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
+                filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
+                height: 100px;
+                width: 100px;
+            }
+    
+            .text {
+                font-size: 18px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <img src="https://attendance.remal.com/img/brand/remal-small.png" class="email-brand-img" alt="..."></a>
+            </header>
+            <h2 class="title" style="position: relative; top:10%;right: 50%; transform: translate(50%);text-align: center;">{{MessageTitle}}</h2>
+            <hr />
+            <div class="content-box content">
+                <h3>{{MessageSubtitle}}</h3>
+                <p class="text">{{MessageText}}</p>
+            </div>
+            <hr />
+        </div>
+    </body>
+</html>

@@ -1,0 +1,34 @@
+﻿@model LoanViewModel
+@{
+    ViewData["Title"] = "Edit Loan";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <div class="form-group">
+                <label asp-for="OriginalAmount" class="control-label"></label>
+                <input asp-for="OriginalAmount" class="form-control" />
+                <span asp-validation-for="OriginalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RemainingAmount" class="control-label"></label>
+                <input asp-for="RemainingAmount" class="form-control" />
+                <span asp-validation-for="RemainingAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyPayment" class="control-label"></label>
+                <input asp-for="MonthlyPayment" class="form-control" />
+                <span asp-validation-for="MonthlyPayment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-default" />
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

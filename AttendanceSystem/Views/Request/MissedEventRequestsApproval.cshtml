@@ -1,0 +1,58 @@
+﻿@model IList<MissedEventRequest>
+@{
+    ViewData["Title"] = "Missed Event Requests";
+}
+
+<h1>Missed Events Requests <small>(@Model.Count() requests)</small></h1>
+<div class="row">
+    <div class="col-12">
+        @using (Html.BeginForm("MissedEventRequestsApproval", "Request", FormMethod.Post))
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mt-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Request Date & Time</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Event Name</th>
+                            <th scope="col">Event Date & Time</th>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Approval</th>
+                        </tr>
+                    </thead>
+                    <tbody class="auto-index">
+                        @for (var i = 0; i < Model.Count; i++)
+                        {
+                            @Html.HiddenFor(request => request[i].ID)
+                            @Html.HiddenFor(request => request[i].UserID)
+                            @Html.HiddenFor(request => request[i].IssueDate)
+                            @Html.HiddenFor(request => request[i].Time)
+                            @Html.HiddenFor(request => request[i].Event)
+                            @Html.HiddenFor(request => request[i].Comment)
+                            <tr>
+                                <th scope="col"></th>
+                                <td>@Html.DisplayFor(request => request[i].IssueDate)</td>
+                                <td>@Html.DisplayFor(request => request[i].User.FullName)</td>
+                                <td>@Html.DisplayFor(request => request[i].Event)</td>
+                                <td>@Html.DisplayFor(request => request[i].Time)</td>
+                                <td class="text-wrap">@Html.DisplayFor(request => request[i].Comment)</td>
+                                <td>@Html.DropDownListFor(request => request[i].Approval, new SelectList(Enum.GetValues(typeof(Approval))))</td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="7" class="text-center">No records are available</td></tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @if (Model.Count() > 0)
+            {
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                </div>          }
+        }
+    </div>
+</div>

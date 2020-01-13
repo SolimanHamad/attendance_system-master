@@ -1,0 +1,32 @@
+﻿@model LoanViewModel
+@using AttendanceSystem.TagHelpers
+@{
+    ViewData["Title"] = "Manage Loans";
+    List<CustomAction> actions = new List<CustomAction>
+    {
+        new CustomAction
+        {
+            Name = "Edit",
+            Link = "/Loan/Edit/"
+        },
+        new CustomAction
+        {
+            Name = "Delete",
+            Link = "/Loan/Delete/"
+        }
+    };
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-end my-4">
+    <a class="btn btn-primary" asp-action="Create">New Loan</a>
+</div>
+<table for="@Model" ajax="/api/loans" auto-ajax="true" actions="@actions"></table>
+
+@section Scripts
+{
+    <script>
+        $('table').css('padding','0');
+    </script>
+}

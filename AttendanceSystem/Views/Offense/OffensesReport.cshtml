@@ -1,0 +1,177 @@
+﻿@model List<UserOffensesReport>
+@{
+    ViewData["Title"] = "Monthly Offenses Report";
+}
+<h1>Employees' Offenses from @ViewBag.StartDate to @ViewBag.EndDate</h1>
+<h3 class="text-uppercase mt-4 mb-0">Stats</h3>
+<div class="row my-3 justify-content-between align-items-center">
+    <div class="col-xl-20 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Absences
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.Absences
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-20 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Lates
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.Lates
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-20 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Make Ups
+                </h5>
+                <span class="h2 font-weight-bold mb-0">
+                    @ViewBag.MakeUps
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-20 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Penalties
+                </h5>
+                @if (ViewBag.Penalty > 0)
+                {
+                    <span class="h2 font-weight-bold mb-0 text-danger">
+                        @ViewBag.Penalty%
+                    </span>
+                }
+                else
+                {
+                    <span class="h2 font-weight-bold mb-0">
+                        @ViewBag.Penalty%
+                    </span>
+                }
+            <div><small>of daily salaries</small></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-20 col-lg-4 pb-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase text-muted mb-0">
+                    Penalty Amount
+                </h5>
+                @if (ViewBag.PenaltyAmount < 0)
+                {
+                    <span class="h2 font-weight-bold mb-0 text-danger">
+                        @ViewBag.PenaltyAmount SR
+                    </span>
+                }
+                else
+                {
+                    <span class="h2 font-weight-bold mb-0">
+                        @ViewBag.PenaltyAmount SR
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-sm-12 table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Absences</th>
+                    <th scope="col">Lates</th>
+                    <th scope="col">Make Ups</th>
+                    <th scope="col">Penalty Percent</th>
+                    <th scope="col">Penalty Amount</th>
+                </tr>
+            </thead>
+            <tbody class="auto-index">
+                @foreach (UserOffensesReport report in Model)
+                {
+                    <tr>
+                        <th scope="col"></th>
+                        <td>@report.UserName</td>
+                        <td>@report.Absences</td>
+                        <td>@report.Lates</td>
+                        <td>@report.MakeUps</td>
+                        <td>@report.PenaltyPercent%</td>
+                        <td>@(report.PenaltyAmount) SR</td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="100" class="text-center">No records are available for this period</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-12 justify-content-between">
+        <div class="row justify-content-start">
+            <div class="col-5"><input type="date" id="start-date" class="form-control" /></div>
+            <div class="col-5"><input type="date" id="end-date" class="form-control" value="" /></div>
+            <div class="col-2">
+                <button id="go-date" type="button" class="btn btn-secondary">Go</button>
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-secondary" asp-route-n="@ViewBag.Previous">Previous month</a>
+            <a class="btn btn-secondary" asp-route-n="@ViewBag.Next">Next month</a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            // Set min date value for end-date input
+            $('#end-date').attr('min', $('#start-date').val());
+        
+            // Change the format of the date string to html format (yyyy-MM-dd)
+            var s = '@ViewBag.StartDate';
+            var e = '@ViewBag.EndDate';
+            var day = s.slice(0, 2);
+            var month = s.slice(3, 5);
+            var year = s.slice(6);
+            var start_date_value = year + '-' + month + '-' + day; // html date value format
+            var day = e.slice(0, 2);
+            var month = e.slice(3, 5);
+            var year = e.slice(6);
+            var end_date_value = year + '-' + month + '-' + day; // html date value format
+        
+            // Set the initial value of date inputs
+            $('#start-date').attr('value', start_date_value);
+            $('#end-date').attr('value', end_date_value);
+        
+            // On click, change the date values to ticks then redirect to url
+            $('#go-date').click(function () {
+                var s = $('#start-date').val();
+                var e = $('#end-date').val();
+                var start_date = new Date(s);
+                var end_date = new Date(e);
+                var st = ((start_date.getTime() * 10000) + 621355968000000000);
+                var et = ((end_date.getTime() * 10000) + 621355968000000000);
+                var url = '/OffensesReport/' + st + '/' + et;
+                window.location.href = url;
+            });
+        
+            // On start-date update, set min value for end-date
+            $('#start-date').focusout(function () {
+                $('#end-date').attr('min', $('#start-date').val());
+            });
+        });
+    </script>
+}

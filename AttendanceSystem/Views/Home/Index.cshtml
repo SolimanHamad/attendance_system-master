@@ -1,0 +1,161 @@
+﻿@model  HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Welcome to Remal!</h1>
+
+<div class="current-time col-12 col-md-8 col-lg-4">
+    <small>Current Time:</small>
+    <div class="font-weight-bold" id="current-time" style="font-size: 2.0rem;"></div>
+    <h2>@Html.Raw(Model.LastEventTime)</h2> @* TODO: remove viewbags*@
+    @if (Model.CheckedIn && Model.NotToday && !Model.MissedEventAdded)
+    {
+        <h4>It seems you forgot to check out last time</h4>
+    }
+    else if (!Model.OnVacation)
+    {
+        if (Model.CheckedIn) 
+
+        {
+            <div id="count-down"> </div>
+        }
+
+        @if ((Model.UserIsLate && !Model.CheckedIn) || (Model.CheckedIn && Model.NotToday && Model.MissedEventAdded) )
+        {
+            @await Html.PartialAsync("_AddComment")
+        }
+
+    }
+    else
+    {
+        <h4>You Are On Vacation Today :D</h4>
+    }
+
+</div>
+
+@if (!Model.UserIsLate  ||
+    (Model.CheckedIn && Model.NotToday && !Model.MissedEventAdded)) // if user forgot to check out last time and he is late today
+{
+<div class="row mt-3 justify-content-center">
+    @if (Model.CheckedIn && Model.NotToday && !Model.MissedEventAdded) // Last event was check in  &&  wasn't today
+    {
+        <a asp-action="AddEvent" asp-controller="UserEvent" asp-route-newEvent="@Event.CheckedIn" class="btn btn-icon btn-3 btn-default disabled" aria-disabled="true">
+            <span class="btn-inner--icon"><i class="fas fa-fingerprint"></i></span>
+            <span class="btn-inner--text">Check In</span>
+        </a>
+        <a id="check-out" asp-action="MissedEventRequest" asp-controller="Request" asp-route-newEvent="@Event.CheckedOut" class="btn btn-icon btn-3 btn-default ">
+            <span class="btn-inner--icon"><i class="ni ni ni-user-run"></i></span>
+            <span class="btn-inner--text">Add Missing Check Out </span>
+        </a>
+    }
+    else if (!Model.CheckedIn || (Model.CheckedIn && Model.NotToday && Model.MissedEventAdded)) // Last event was check out
+    {
+        <a asp-action="AddEvent" asp-controller="UserEvent" asp-route-newEvent="@Event.CheckedIn" class="btn btn-icon btn-3 btn-default">
+            <span class="btn-inner--icon"><i class="fas fa-fingerprint"></i></span>
+            <span class="btn-inner--text">Check In</span>
+        </a>
+        <a id="check-out" asp-action="AddEvent" asp-controller="UserEvent" asp-route-newEvent="@Event.CheckedOut" class="btn btn-icon btn-3 btn-default disabled" aria-disabled="true">
+            <span class="btn-inner--icon"><i class="ni ni ni-user-run"></i></span>
+            <span class="btn-inner--text">Check Out</span>
+        </a>
+    }
+    else
+    {
+        <a asp-action="AddEvent" asp-controller="UserEvent" asp-route-newEvent="@Event.CheckedIn" class="btn btn-icon btn-3 btn-default disabled" aria-disabled="true">
+            <span class="btn-inner--icon"><i class="fas fa-fingerprint"></i></span>
+            <span class="btn-inner--text">Check In</span>
+        </a>
+        <a id="check-out" asp-action="AddEvent" asp-controller="UserEvent" asp-route-newEvent="@Event.CheckedOut" class="btn btn-icon btn-3 btn-default">
+            <span class="btn-inner--icon"><i class="ni ni ni-user-run"></i></span>
+            <span class="btn-inner--text">Check Out</span>
+        </a>
+    }
+</div>
+}
+<hr style="margin-bottom: 1rem;" />
+<div class="row">
+    <div class="col-sm-12 table-responsive">
+        <h2 class="table-text">Your Timeline of this Month</h2>
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">No. of Events</th>
+                    <th scope="col">Entry</th>
+                    <th scope="col">Exit</th>
+                    <th scope="col">Worked Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="auto-index">
+                @foreach (var workingDay in Model.TimeLine)
+                {
+                    <tr>
+                        <th scope="col"></th>
+                        <td>@workingDay.Date.ToString("ddd dd/MM/yyyy")</td>
+                        <td>@(workingDay.Events?.Count() ?? 0)</td>
+                        <td>@(workingDay.CheckedIn.HasValue ? workingDay.CheckedIn.Value.ToString("hh:mm tt") : "Unknown")</td>
+                        <td>@(workingDay.CheckedOut.HasValue ? workingDay.CheckedOut.Value.ToString("hh:mm tt") : "Unknown")</td>
+                        <td>
+                           @(workingDay.WorkedTime.HasValue ? workingDay.WorkedTime.Value.ToString("%h' h '" + "%m' m'"):
+                             workingDay.CheckedIn.HasValue? " no check out":
+                             workingDay.IsOnVacation? workingDay.VacationType :
+                             workingDay.IsAbsent? "Absent":"")
+                        </td>
+                        <td>
+                            @if (workingDay.Events?.Count() > 0)
+                            {
+                                <a asp-action="ViewDayEvents" asp-controller="UserEvent" asp-route-ticks="@(workingDay.Date.Ticks)" asp-route-userID="@(workingDay.UserID)">View Events</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (!Model.TimeLine.Any())
+                {
+                    <tr><td colspan="7" class="text-center">No records are available</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section TimeScript{
+    <script>
+        var now = new Date('2020-10-20T' + '@Model.CurrentUTCTime' + 'Z');
+        startTime();
+        function startTime() {
+            document.getElementById('current-time').innerHTML = now.toLocaleTimeString();
+            var s = now.getSeconds();
+            now.setSeconds(s + 1);
+            setTimeout(startTime, 1000);
+        }
+    </script>
+}
+
+
+@section CountDownScript{
+    <script>
+        @if(Model.CheckedIn)
+        {
+            <text>
+        var timer = new Date('@Model.NowDate' + '@Model.Countdown');
+        var currentTime = new Date();
+                startCountDown();
+                function startCountDown() {
+                    document.getElementById("count-down").innerHTML = "Time Left: " + ("0" + timer.getHours()).slice(-2) + ":" + ("0" + timer.getMinutes()).slice(-2) + ":" + ("0" + timer.getSeconds()).slice(-2);
+                    timer.setSeconds(timer.getSeconds() - 1);
+
+                    if (!(timer.getHours() + timer.getMinutes() + timer.getSeconds() > 0)) {
+                        clearInterval(startCountDown);
+                        document.getElementById("count-down").innerHTML = "Your Time Is Up, Leave With No Regrets c:";
+                    } else {
+                        setTimeout(startCountDown, 1000);
+                    }
+                }
+            </text>
+         }
+    </script>
+}

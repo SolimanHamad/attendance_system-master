@@ -1,0 +1,304 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - Attend</title>
+
+    <!-- Favicon -->
+    <link href="~/img/brand/remal.png" rel="icon" type="image/png">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <!-- Icons -->
+    <link href="~/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+    <link href="~/js/plugins/fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="~/scss/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+</head>
+
+<body id="bs-override">
+    <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+        <div class="container-fluid">
+            <!-- Toggler -->
+            @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main"
+                    aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+            </button>*@
+            <div style="width:50px;"></div>
+            <!-- Brand -->
+            <a class="navbar-brand pt-0" asp-controller="Home" asp-action="Index">
+                <img src="~/img/brand/remal.png" class="navbar-brand-img" alt="...">
+                <h1 class="mt-2 text-uppercase">Attend</h1>
+            </a>
+            <!-- User -->
+            <ul class="nav align-items-center d-md-none">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="media align-items-center">
+                            <span class="avatar avatar-sm rounded-circle">
+                                <img alt="Image placeholder" src="~/img/theme/profile_img.jpg">
+                            </span>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
+                        <div class=" dropdown-header noti-title">
+                            <h6 class="text-overflow m-0">Welcome!</h6>
+                        </div>
+                        <a asp-controller="Account" asp-action="Manage" asp-route-id="@UserManager.GetUserAsync(User).Result.Id" title="Manage" class="dropdown-item">
+                            <i class="ni ni-single-02"></i>
+                            <span>Settings</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form method="post" asp-action="Logout" asp-controller="Account" class="dropdown-item">
+                            <button type="submit" class="btn btn-link navbar-btn navbar-link dropdown-item p-0">
+                                <i class="ni ni-user-run"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                <!-- Collapse header -->
+                <div class="navbar-collapse-header d-md-none">
+                    <div class="row">
+                        <div class="col-6 collapse-brand">
+                            <a href="~/index.html">
+                                <img src="~/img/brand/remal.png">
+                            </a>
+                        </div>
+                        <div class="col-6 collapse-close">
+                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#sidenav-collapse-main"
+                                    aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form -->
+                <!-- Navigation -->
+                <ul class="navbar-nav side-nav">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <h4>As User</h4>
+                    }
+                    <li class="nav-item">
+                        <a is-active-route class="nav-link" asp-action="Index" asp-controller="Home">
+                            <i class="fas fa-home text-blue"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a is-active-route class="nav-link" asp-action="ViewMonthlyTimeline" asp-controller="UserEvent">
+                            <i class="fas fa-th-list text-indigo"></i> Timeline
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a is-active-route class="nav-link" asp-action="MyOffenses" asp-controller="Offense">
+                            <i class="far fa-window-close text-danger"></i> Offenses
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a is-active-route class="nav-link " asp-controller="Vacation" asp-action="Index">
+                            <i class="ni ni-umbrella-13 text-info"></i> Vacations
+                        </a>
+                    </li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-controller="Request" asp-action="MissedEventRequests">
+                                <i class="ni ni-calendar-grid-58 text-red"></i> Missed Event Requests
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-controller="Request" asp-action="EditEventRequests">
+                                <i class="ni ni-tag text-green"></i> Edit Event Requests
+                            </a>
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <h4>As Admin</h4>
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="UserEvent" asp-action="DailyAttendance" class="nav-link">
+                                <i class="ni ni-calendar-grid-58 text-default"></i> Daily Attendance
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <label class="nav-link">
+                                <i class="ni ni-bullet-list-67 text-red"></i> Event Requests <span id="events" class="badge badge-pill badge-danger"></span>
+                            </label>
+                            <a is-active-route class="nav-link sub-nav-item" asp-action="MissedEventRequestsApproval" asp-controller="Request">
+                                Missed Events
+                                <span id="missed" class="badge badge-pill badge-danger"></span>
+                            </a>
+                            <a is-active-route class="nav-link sub-nav-item" asp-action="EditEventRequestsApproval" asp-controller="Request">
+                                Edited Events
+                                <span id="edited" class="badge badge-pill badge-danger"></span>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="Offense" asp-action="OffensesApproval" class="nav-link">
+                                <i class="fas fa-traffic-light text-black-50"></i> Offenses Approval
+                                <span id="offenses" class="badge badge-pill badge-danger"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="UserManagement" asp-action="Index" class="nav-link">
+                                <i class="ni ni-single-02 text-red"></i> Employees Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="Vacation" asp-action="Manage" class="nav-link">
+                                <i class="ni ni-umbrella-13 text-green"></i> Vacations Management <span id="vacations" class="badge badge-pill badge-danger"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-action="Index" asp-controller="Loan"><i class="ni ni-money-coins text-green"></i> Loans Management</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="Offense" asp-action="OffensesReport" class="nav-link">
+                                <i class="ni ni-chart-pie-35 text-blue"></i> Offenses Report
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route asp-controller="SalarySheet" asp-action="Index" class="nav-link">
+                                <i class="fas fa-money-check-alt text-green"></i> Salary Sheet
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-action="Index" asp-controller="Rule"><i class="fas fa-pencil-ruler text-purple"></i> Rules Configuration</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+            <div class="container-fluid justify-content-end">
+                <!-- Brand -->
+                <!-- User -->
+                <ul class="navbar-nav align-items-center d-none d-md-flex">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="media align-items-center">
+                                    <span class="avatar avatar-sm rounded-circle">
+                                        <img alt="Image placeholder" src="~/img/theme/profile_img.jpg">
+                                    </span>
+
+                                    <div class="media-body ml-2 d-none d-lg-block">
+                                        <span class="mb-0 text-sm  font-weight-bold">@UserManager.GetUserAsync(User).Result.FullName <i class="fas fa-angle-down arrow-down"></i></span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
+                                <div class=" dropdown-header noti-title">
+                                    <h6 class="text-overflow m-0">Welcome!</h6>
+                                </div>
+                                <a asp-controller="Account" asp-action="Manage" asp-route-id="@UserManager.GetUserAsync(User).Result.Id" title="Manage" class="dropdown-item">
+                                    <i class="ni ni-single-02"></i>
+                                    <span>Settings</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form method="post" asp-action="Logout" asp-controller="Account" class="dropdown-item">
+                                    <button type="submit" class="btn btn-link navbar-btn navbar-link dropdown-item p-0">
+                                        <i class="ni ni-user-run"></i>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class=" nav-link active " asp-controller="Account" asp-action="Login">
+                                <i class="ni ni-tv-2 text-green"></i> Login
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+        <!-- Header -->
+        <div class="header bg-gradient-primary pb-1 pt-5 pt-md-8"></div>
+        <div class="container-fluid mt--7">
+            <div class="mt-5 mx-4">
+                @await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])
+                @RenderBody()
+            </div>
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="row align-items-center justify-content-xl-between">
+                    <div class="col-xl-6">
+                        <div class="copyright text-center text-xl-left text-muted">
+                            &copy; @{var year = DateTime.Now.Year;}@year <a href="#" class="font-weight-bold ml-1"
+                                           target="_blank">Attend</a>
+                        </div>
+                    </div>
+                    @*<div class="col-xl-6">
+                            <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About Us</a>
+                                </li>
+                            </ul>
+                        </div>*@
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    @RenderSection("TimeScript", required: false)
+    @RenderSection("CountDownScript", required: false)
+    @RenderSection("SortBYScript", required: false)
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+    </script>
+
+    @{ await Html.RenderPartialAsync("_Scripts"); }
+    @{ await Html.RenderPartialAsync("_Stylesheets"); }
+
+
+
+    <!--   Core   -->
+    <script src="~/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!--   Optional JS   -->
+    <script src="~/js/plugins/chart.js/dist/Chart.min.js"></script>
+    <script src="~/js/plugins/chart.js/dist/Chart.extension.js"></script>
+    <!--   Argon JS   -->
+    <script src="~/js/argon-dashboard.min.js?v=1.1.0"></script>
+    <script src="~/js/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+﻿@model List<SalarySheet>
+
+<h1 id="title">Employees Salary Sheet of @ViewBag.StartDate to @ViewBag.EndDate</h1>
+
+<div class="row mt-4">
+
+    <div class="col-sm-12">
+
+
+        @using (Html.BeginForm("Edit", "SalarySheet", FormMethod.Post))
+        {
+            <input type="hidden" name="n" value="@ViewBag.Next">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped" id="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Employee Name</th>
+                            <th scope="col">Salary</th>
+                            <th scope="col">Attendance Penalties</th>
+                            <th scope="col">Unpaid Vacation Deduction</th>
+                            <th scope="col">Insurance Deduction</th>
+                            <th scope="col">Loan Deduction</th>
+                            <th scope="col">Other Deductions</th>
+                            <th scope="col">Housing Allowance</th>
+                            <th scope="col">Transportation Allowance</th>
+                            <th scope="col">Other Additions</th>
+                            <th scope="col">Final Salary</th>
+                            <th scope="col">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody class="auto-index text-center">
+                        @if (Model.Count() > 0)
+                        {
+
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                @Html.HiddenFor(x => x[i].ID)
+                                @Html.HiddenFor(x => x[i].UserID)
+                                @Html.HiddenFor(x => x[i].Date)
+                                <tr>
+                                    <th scope="col"></th>
+
+                                    <td class="text-left">@Model[i].User.FullName</td>
+                                    <td>@Model[i].Salary</td>
+                                    @Html.HiddenFor(x => x[i].Salary)
+                                    <td>
+                                        @Html.TextBoxFor(x => x[i].AttendancePenalties,
+                              new { type = "number", min = "0", @class = "form-control deduction" })
+                                    </td>                                    <td>
+                                        @Html.TextBoxFor(x => x[i].UnpaidVacationDeduction,
+                              new { type = "number", min = "0", @class = "form-control deduction" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x[i].InsuranceDeduction,
+                              new { type = "number", min = "0", @class = "form-control deduction" })
+                                    </td>
+                                    <td>
+                                        @Model[i].LoanDeduction
+                                    </td>
+                                    @Html.HiddenFor(x => x[i].LoanDeduction)
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x[i].OtherDeductions,
+                              new { type = "number", min = "0", @class = "form-control deduction" })
+                                    </td>
+                                    <td>@Model[i].HousingAllowance</td>
+                                    @Html.HiddenFor(x => x[i].HousingAllowance)
+
+                                    <td>@Model[i].TransportationAllowance</td>
+                                    @Html.HiddenFor(x => x[i].TransportationAllowance)
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x[i].OtherAdditions,
+                              new { type = "number", min = "0", @class = "form-control addition" })
+                                    </td>
+                                    <td class="final-salary font-weight-800">@Model[i].FinalSalary</td>
+                                    @Html.HiddenFor(x => x[i].FinalSalary)
+                                    <td>
+                                        @Html.TextBoxFor(x => x[i].Comment,
+                              new { @class = "form-control", style = "width: 250px" })
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr> <td colspan="100" class="text-center">Salary Sheet for this month is not available yet</td></tr>}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="row justify-content-start mt-3">
+                @if (Model.Any())
+                {
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Save Chages</button>
+                    </div>
+                }
+            </div>
+
+        }
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/export-to-file.js"></script>
+    <script>
+        $(".deduction").focusout(function () {
+            var finalSalary = parseInt($(this).parent().siblings(".final-salary").text());
+            var deduction = parseInt($(this).val());
+            var amount = finalSalary - deduction;
+            $(this).parent().siblings(".final-salary").text(amount);
+        });
+        $(".addition").focusout(function () {
+            var finalSalary = parseInt($(this).parent().siblings(".final-salary").text());
+            var addition = parseInt($(this).val());
+            var amount = finalSalary + addition;
+            $(this).parent().siblings(".final-salary").text(amount);
+        });
+
+        $(".deduction").focusin(function () {
+            var finalSalary = parseInt($(this).parent().siblings(".final-salary").text());
+            var deduction = parseInt($(this).val());
+            var amount = finalSalary + deduction;
+            $(this).parent().siblings(".final-salary").text(amount);
+        });
+        $(".addition").focusin(function () {
+            var finalSalary = parseInt($(this).parent().siblings(".final-salary").text());
+            var addition = parseInt($(this).val());
+            var amount = finalSalary - addition;
+            $(this).parent().siblings(".final-salary").text(amount);
+        });
+
+    </script>
+}

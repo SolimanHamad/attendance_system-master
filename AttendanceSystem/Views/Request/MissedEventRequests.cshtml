@@ -1,0 +1,72 @@
+﻿@using AttendanceSystem.Extensions
+@model IEnumerable<MissedEventRequest>
+@{
+    ViewData["Title"] = "Missed Event Requests";
+}
+
+<h1>Your Missed Event Requests</h1>
+<div class="d-flex justify-content-end my-4">
+    <a class="btn btn-primary pl-3" asp-action="MissedEventRequest"><i class="fas fa-plus"></i> New Request</a>
+</div>
+
+<div class="row">
+
+    <div class="col-sm-12 table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Request Date</th>
+                    <th scope="col">Event Name</th>
+                    <th scope="col">Event Date</th>
+                    <th scope="col">Event Time</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Approval</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="auto-index">
+                @foreach (var eventRequest in Model)
+                {
+                    <tr>
+                        <th scope="col"></th>
+                        <td>@eventRequest.IssueDate.ToString("dd/MM/yyyy")</td>
+                        <td>@eventRequest.Event.GetDisplayName()</td>
+                        <td>@eventRequest.Time.ToString("dd/MM/yyyy")</td>
+                        <td>@eventRequest.Time.ToString("hh:mm tt")</td>
+                        <td class="text-wrap">@eventRequest.Comment</td>
+                        @{ if (eventRequest.Approval == Approval.Approved)
+                            {
+                            <td class="text-green font-weight-bold">@eventRequest.Approval</td>
+                            }
+                            else if (eventRequest.Approval == Approval.Rejected)
+                            {
+                            <td class="text-danger font-weight-bold">@eventRequest.Approval</td>
+                            }
+                            else
+                            {
+                            <td>@eventRequest.Approval</td>
+                            }
+                        }
+                    <td>
+                        @{
+                            if (eventRequest.Approval == Approval.Pending)
+                            {
+                                <a asp-action="DeleteRequestedMissingEvent" asp-route-eventID="@eventRequest.ID">Delete</a>
+                            }
+                        }
+
+                    </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="7" class="text-center">No records are available</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+        <div class="col-12">
+        Showing at maximum last 20 requests 
+        </div>
+</div>
