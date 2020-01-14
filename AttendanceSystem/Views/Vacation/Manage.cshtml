@@ -1,9 +1,7 @@
-﻿@*@model IEnumerable<VacationViewModel>*@
-@model SearchViewModel
+﻿@model SearchViewModel
 
 @{
     ViewData["Title"] = "Manage Vacation Requests";
-
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -16,49 +14,48 @@
 
 </div>
 
-
 <div class="row">
     <div class="col-sm-12 table-responsive">
         <table class="table table-hover table-striped">
             <thead class="thead-dark">
                 <tr>
                     <form asp-controller="Vacation" asp-action="Manage" method="post">
-                        <input id="SortBy" asp-for="SortBy" style="visibility:hidden" />
+                        <input id="SortBy" asp-for="SortBy" type="text" value="" hidden />
                         <th>
-                            <a id="sorter" >@Html.DisplayNameFor(Model => Model.IssueDate)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)" >@Html.DisplayNameFor(Model => Model.IssueDate)</a>
+                            <br />
                             <input type="date" style="height: 25px" asp-for="IssueDate" placeholder="yyyy/mm/dd">
-                        </th>                    
+                        </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["StartDateSort"]">@Html.DisplayNameFor(Model => Model.StartDate)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.StartDate)</a>
+                            <br />
                             <input type="date" style="height: 25px" asp-for="StartDate" placeholder="yyyy/mm/dd">
                         </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["EndDateSort"]">@Html.DisplayNameFor(Model => Model.EndDate)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.EndDate)</a>
+                            <br />
                             <input style="height: 25px" type="date" asp-for="EndDate">
                         </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["NameSort"]">@Html.DisplayNameFor(Model => Model.Name)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.Name)</a>
+                            <br />
                             <input type="text" style=" width:90px" asp-for="Name">
                         </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["TotalDaysSort"]">@Html.DisplayNameFor(Model => Model.TotalDays)</a>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.TotalDays)</a>
                             <br />
-                                <input type="text" style=" width:70px" asp-for="TotalDays">
+                            <input type="text" style=" width:70px" asp-for="TotalDays">
                         </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["StatusSort"]">@Html.DisplayNameFor(Model => Model.RequestStatus)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.RequestStatus)</a>
+                            <br />
                             <select style="height:25px" asp-for="RequestStatus" asp-items="Html.GetEnumSelectList<RequestStatus>()">
                                 <option selected="selected" value="">--Select--</option>
                             </select>
                         </th>
                         <th>
-                            <a asp-action="Manage" asp-route-sortBy="@ViewData["typeSort"]">@Html.DisplayNameFor(Model => Model.VacationType)</a>
-                            <br/>
+                            <a id="sorter" onclick="updateSortBy(event)">@Html.DisplayNameFor(Model => Model.VacationType)</a>
+                            <br />
                             <select style="height:25px" asp-for="VacationType" asp-items="Html.GetEnumSelectList<VacationType>()">
                                 <option selected="selected" value="">--Select--</option>
                             </select>
@@ -70,10 +67,9 @@
                         </th>
                         <th>
                             <div> Actions </div>
-                            <button type="submit" value="search" class="btn btn-primary btn-sm">Filter</button>
+                            <button id="filterButton" type="submit" value="search" class="btn btn-primary btn-sm">Filter</button>
                         </th>
                     </form>
-
                 </tr>
             </thead>
             <tbody class="auto-index">
@@ -98,8 +94,6 @@
                                                                                  "color: #2dce89";
 
                      <tr>
-
-
                          <td>
                              @Html.DisplayFor(modelItem => item.CreatedAt) 
                          </td>           
@@ -135,17 +129,27 @@
 
             </tbody>
         </table>
-
     </div>
  </div> 
 
 @section SortBYScript{  
 <script>
-    document.getElementById("SortBy").addEventListener("click", updateSortBy);
-    function updateSortBy() { }
-    document.getElementById("SortBy") = document.getElementById("sorter").innerHTML;
+    var currentSort = '@Model.SortBy';
 
+    function updateSortBy(event) {
 
+        var targetedColumn = event.target;
+        var newSort = targetedColumn.text;
 
+        if (currentSort == newSort) {
+            newSort += "_desc";
+        }
+
+        currentSort = newSort;
+        $("#SortBy").val(currentSort);
+        $("#filterButton").click();
+    }
 </script>
 }
+
+

@@ -44,25 +44,9 @@ namespace AttendanceSystem.Controllers
         }
 
         [Authorize(Roles = ApplicationUser.AdminRole)]
-        public async Task<IActionResult> Manage(string name,
-            DateTime? issueDate,
-            DateTime? startDate,
-            DateTime? endDate,
-            double totalDays,
-            VacationType? vacationType,
-            RequestStatus? requestStatus,
-            string sortBy)
+        public async Task<IActionResult> Manage()
         {
-            ViewData["NameSort"] = sortBy == "Name" ? "name_desc" : "Name";
-            ViewData["TotalDaysSort"] = sortBy == "TotalDays" ? "TotalDays_desc" : "TotalDays";
-            ViewData["issueDateSort"] = sortBy == "issueDate" ? "issueDate_desc" : "issueDate";
-            ViewData["StartDateSort"] = sortBy == "startDate" ? "startDate_desc" : "startDate";
-            ViewData["EndDateSort"] = sortBy == "endDate" ? "endDate_desc" : "endDate";
-            ViewData["StatusSort"] = sortBy == "Status" ? "Status_desc" : "Status";
-            ViewData["typeSort"] = sortBy == "type" ? "type_desc" : "type";
-            ViewData["commentSort"] = sortBy == "comment" ? "comment_desc" : "comment";
-
-            List<VacationViewModel> vacationCollection = (await vacationRepository.GetAllVacationSorted(name, issueDate, startDate,endDate, totalDays, vacationType, requestStatus, sortBy)).Select(v => new VacationViewModel(v)).ToList();
+            List<VacationViewModel> vacationCollection = (await vacationRepository.GetAllVacationSorted()).Select(v => new VacationViewModel(v)).ToList();
             return View(new SearchViewModel() { Vacations = vacationCollection }); // get vacations 
         }
 
@@ -70,7 +54,7 @@ namespace AttendanceSystem.Controllers
         public async Task<IActionResult> Manage(SearchViewModel model)
         {
             model.Vacations = (await vacationRepository.GetAllVacationSorted(model.Name, model.IssueDate, model.StartDate, model.EndDate, model.TotalDays, model.VacationType, model.RequestStatus, model.SortBy)).Select(v => new VacationViewModel(v)).ToList();
-            return View(model); // get vacations 
+            return View(model);
         }
 
         public IActionResult Create() => View();

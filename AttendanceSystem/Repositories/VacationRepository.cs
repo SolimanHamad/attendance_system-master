@@ -98,14 +98,14 @@ namespace AttendanceSystem.Repositories
         }
 
         public async Task<IEnumerable<Vacation>> GetAllVacationSorted
-            (string name,
-            DateTime? issueDate, 
-            DateTime? startDate,
-            DateTime? endDate, 
-            double totalDays,
-            VacationType? vacationType, 
-            RequestStatus? requestStatus, 
-            string sortBy) 
+            (string name = null,
+            DateTime? issueDate = null, 
+            DateTime? startDate = null,
+            DateTime? endDate = null, 
+            double totalDays = 0,
+            VacationType? vacationType = null, 
+            RequestStatus? requestStatus = null, 
+            string sortBy = null) 
         {
             // Search 
             IQueryable<Vacation> vacation = context.Vacations.AsQueryable();
@@ -146,7 +146,7 @@ namespace AttendanceSystem.Repositories
             // Sort
             switch (sortBy)
             {
-                case "name_desc":
+                case "Name_desc":
                     vacation = vacation.OrderByDescending(v => v.User.FullName);
                     break;
                 case "Name":
@@ -158,34 +158,34 @@ namespace AttendanceSystem.Repositories
                 case "TotalDays":
                     vacation = vacation.OrderBy(v => VacationUtilities.GetWorkingDays(v.StartDate, v.EndDate));
                     break;
-                case "startDate_desc":
+                case "StartDate_desc":
                     vacation = vacation.OrderByDescending(v => v.StartDate);
                     break;
-                case "startDate":
+                case "StartDate":
                     vacation = vacation.OrderBy(v => v.StartDate);
                     break;
-                case "endtDate_desc":
+                case "EndDate_desc":
                     vacation = vacation.OrderByDescending(v => v.EndDate);
                     break;
-                case "endDate":
+                case "EndDate":
                     vacation = vacation.OrderBy(v => v.EndDate);
                     break;
-                case "issueDate_desc":
+                case "IssueDate_desc":
                     vacation = vacation.OrderByDescending(v => v.CreatedAt);
                     break;
-                case "issueDate":
+                case "IssueDate":
                     vacation = vacation.OrderBy(v => v.CreatedAt);
                     break;
-                case "Status_desc":
+                case "RequestStatus_desc":
                     vacation = vacation.OrderByDescending(v => v.Status);
                     break;
-                case "Status":
+                case "RequestStatus":
                     vacation = vacation.OrderBy(v => v.Status);
                     break;
-                case "type_desc":
+                case "VacationType_desc":
                     vacation = vacation.OrderByDescending(v => v.VacationType);
                     break;
-                case "type":
+                case "VacationType":
                     vacation = vacation.OrderBy(v => v.VacationType);
                     break;
                 case "comment_desc":
