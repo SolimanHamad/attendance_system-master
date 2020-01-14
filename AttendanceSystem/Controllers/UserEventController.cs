@@ -144,6 +144,7 @@ namespace AttendanceSystem.Controllers
                 UserEvent userLastEvent = await userEventRepository.GetLastEventInDate(user.Id, date);
                 DailyAttendanceViewModel dailyAttendanceRecord = new DailyAttendanceViewModel();
                 dailyAttendanceRecord.UserName = user.FullName;
+                dailyAttendanceRecord.CheckAttendance = user.CheckAttendance;
                 if (user.GetCurrentVacationType(DateTime.Today).HasValue)
                 {
                     dailyAttendanceRecord.Type = user.GetCurrentVacationType(DateTime.Today).Value; 

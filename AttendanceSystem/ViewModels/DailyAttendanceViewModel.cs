@@ -1,4 +1,5 @@
 ﻿using AttendanceSystem.Models.Enums;
+using AttendanceSystem.Models;
 
 namespace AttendanceSystem.ViewModels
 {
@@ -8,6 +9,7 @@ namespace AttendanceSystem.ViewModels
         public string LastEvent { get; set; }
         public AttendanceStatus Status { get; set; }
         public VacationType Type { get; set; }
+        public bool CheckAttendance { get; set; }
     }
 
     public enum AttendanceStatus
@@ -17,5 +19,7 @@ namespace AttendanceSystem.ViewModels
         Left,
         Vacation
     }
+
+    
 }
 

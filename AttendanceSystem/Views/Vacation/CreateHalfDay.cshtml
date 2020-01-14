@@ -12,7 +12,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label">Date</label>
-                <input asp-for="StartDate" class="form-control" />
+                <input asp-for="StartDate" id="defaultDate" class="form-control" type="date" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -26,3 +26,10 @@
         </form>
     </div>
 </div>
+
+<script>
+    window.onload = function () {
+        var date = new Date();
+        $("#defaultDate").val(date.getFullYear() + "-" + date.getMonth()+1 + "-" + date.getDate());
+    }
+</script>
